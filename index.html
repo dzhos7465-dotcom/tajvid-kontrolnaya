@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light">
+<meta name="darkreader-lock">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Контрольная по таджвиду</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri&family=Inter:wght@400;500;600;700&display=block" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light only;
+  --ink:#1a1a2e; --ink-mid:#3d3d5c; --ink-soft:#8a8aa0; --accent:#1e3a5f;
+  --gold:#c8972a; --gold-light:#f0e0b0; --heavy:#6B1D2C; --canvas-bg:#faf9f7;
+  --ok:#1f7a4d; --ok-bg:#d6efdf; --bad:#b3261e; --bad-bg:#f8d9d6; --neu:#e6e6ec;
+  --line:#e6e1d6; --card:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--canvas-bg)!important;color:var(--ink);font-family:Inter,system-ui,sans-serif;forced-color-adjust:none}
+body{min-height:100dvh}
+#app{max-width:560px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column}
+button{font-family:inherit}
+
+/* верхняя полоса */
+.top{position:sticky;top:0;z-index:5;background:var(--canvas-bg);padding:12px 16px 10px;border-bottom:1px solid var(--line);display:none}
+.top-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--ink-soft);margin-bottom:8px}
+.top-row b{color:var(--accent);font-weight:600}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gold);width:0;transition:width .35s}
+main{flex:1;padding:18px 16px 120px}
+.screen{animation:in .28s ease}
+@keyframes in{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+
+/* нижняя кнопка */
+.foot{position:fixed;left:0;right:0;bottom:0;z-index:5;background:linear-gradient(rgba(250,249,247,0),var(--canvas-bg) 30%);padding:18px 16px calc(14px + env(safe-area-inset-bottom))}
+.foot-in{max-width:528px;margin:0 auto}
+.btn{width:100%;border:0;border-radius:14px;padding:17px;font-weight:600;font-size:18px;background:var(--accent);color:#fff;cursor:pointer}
+.btn.next{background:var(--heavy)}
+.btn.line{background:transparent;color:var(--accent);border:1.5px solid var(--accent);padding:14px;font-size:16px}
+
+/* общие блоки */
+.ar-title{font-family:Amiri,serif;font-size:46px;text-align:center;color:var(--heavy);line-height:1.5;direction:rtl}
+h1{font-size:26px;text-align:center;line-height:1.25}
+.sub{text-align:center;color:var(--ink-mid);font-size:16px;margin-top:6px}
+.orn{width:64px;height:3px;background:var(--gold);border-radius:2px;margin:16px auto 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin-top:16px}
+.card h3{font-size:13px;color:var(--ink-soft);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.cond{background:var(--gold-light);border:1px solid #e3cf95;border-radius:16px;padding:14px 16px;margin-top:16px;font-size:16px;line-height:1.5}
+.cond b{color:var(--heavy)}
+ol.topics{list-style:none;display:grid;gap:9px;counter-reset:t}
+ol.topics li{display:flex;gap:10px;align-items:center;font-size:16px;counter-increment:t}
+ol.topics li::before{content:counter(t);width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* задание */
+.tag{display:inline-block;font-size:13px;font-weight:600;color:var(--heavy);background:#f3e6e8;border-radius:20px;padding:5px 12px}
+.q{font-size:20px;line-height:1.45;margin-top:12px;font-weight:500}
+.q b{color:var(--heavy)}
+.how{display:block;background:#eef2f7;border-radius:14px;padding:12px 14px;margin-top:12px;font-size:15px;line-height:1.45;color:var(--ink-mid)}
+.how b{color:var(--accent)}
+.chip{display:inline-block;font-size:13px;color:var(--ink-mid);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:6px 12px;margin-top:12px}
+.sura{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 12px 18px;margin-top:14px}
+.sura-h{text-align:center;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:6px}
+.sura-h .a{font-family:Amiri,serif;font-size:26px;color:var(--heavy);direction:rtl;line-height:1.6}
+.sura-h .r{font-size:13px;color:var(--ink-soft)}
+.txt{direction:rtl;font-family:Amiri,serif;font-size:30px;line-height:2.3;text-align:justify;text-align-last:center;color:var(--ink)}
+.w{border-radius:8px;padding:0 3px;cursor:pointer;transition:background .15s;-webkit-user-select:none;user-select:none;white-space:nowrap}
+.w.sel{background:var(--gold-light);box-shadow:inset 0 -3px 0 var(--gold)}
+.w.r-ok{background:var(--ok-bg);box-shadow:inset 0 -3px 0 var(--ok)}
+.w.r-bad{background:var(--bad-bg);box-shadow:inset 0 -3px 0 var(--bad)}
+.w.r-extra{background:var(--bad-bg);text-decoration:line-through;text-decoration-color:var(--bad);text-decoration-thickness:2px}
+.w.r-miss{outline:2px dashed var(--ok);outline-offset:1px}
+.w.r-neu{background:var(--neu)}
+.lb{font-family:Inter,sans-serif;font-size:11px;font-weight:700;vertical-align:super;line-height:1;margin-right:3px;color:var(--heavy);white-space:nowrap}
+.r-ok .lb,.r-miss .lb{color:var(--ok)}
+.r-bad .lb{color:var(--bad)}
+.an{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;border:1.5px solid var(--gold);border-radius:50%;font-size:19px;color:var(--gold);margin:0 4px;vertical-align:middle;line-height:1}
+.lock .w,.lock .opt{pointer-events:none}
+
+/* выбор ответа */
+.item{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:14px}
+.item .src{font-size:13px;color:var(--ink-soft)}
+.item .txt{font-size:28px;line-height:2.1;text-align:center;text-align-last:center}
+.item .num{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:2px}
+.hl{background:var(--gold-light);box-shadow:inset 0 -3px 0 var(--gold);border-radius:8px;padding:0 3px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.opt{border:1.5px solid var(--line);background:var(--canvas-bg);border-radius:12px;padding:12px 8px;font-weight:500;font-size:15px;color:var(--ink);cursor:pointer;line-height:1.3}
+.opt.ar{font-family:Amiri,serif;font-size:27px;line-height:1.7;padding:4px 8px;direction:rtl}
+.opts .opt:last-child:nth-child(odd){grid-column:1/-1}
+.opt.pick{border-color:var(--gold);background:var(--gold-light);font-weight:600}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg);color:var(--ok);font-weight:600}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+
+/* разбор */
+.fb{margin-top:16px;border-radius:16px;padding:14px 16px;font-size:16px;line-height:1.5;background:var(--card);border:1px solid var(--line)}
+.fb .pts{font-weight:700;font-size:20px;margin-bottom:4px}
+.fb.full .pts{color:var(--ok)}
+.fb.part .pts{color:var(--heavy)}
+.legend{display:grid;gap:7px;margin-top:10px;font-size:14px;color:var(--ink-mid)}
+.legend i{display:inline-block;width:24px;height:15px;border-radius:4px;vertical-align:-3px;margin-right:9px}
+.again{background:none;border:0;color:var(--accent);font-weight:600;font-size:15px;margin-top:12px;padding:4px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* нижнее окно выбора вида */
+.sheet-bg{position:fixed;inset:0;background:rgba(26,26,46,.35);z-index:20;display:none}
+.sheet{visibility:hidden;position:fixed;left:0;right:0;bottom:0;z-index:21;background:#fff;border-radius:22px 22px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .25s;box-shadow:0 -6px 24px rgba(0,0,0,.12)}
+.sheet.on{transform:none;visibility:visible}
+.sheet-in{max-width:528px;margin:0 auto}
+.sheet .grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 10px}
+.sheet .word{font-family:Amiri,serif;font-size:40px;text-align:center;direction:rtl;color:var(--heavy);line-height:1.7}
+.sheet .row{display:grid;gap:10px;margin-top:8px}
+.sheet .row.c2{grid-template-columns:1fr 1fr}
+.sheet .row.c3{grid-template-columns:1fr 1fr 1fr}
+.sheet .row .btn{padding:16px 6px;font-size:17px}
+.sheet .row .btn.cur{background:var(--gold);color:#fff}
+.sheet .rm{background:transparent;border:0;color:var(--bad);font-weight:500;font-size:16px;width:100%;padding:14px;margin-top:4px;cursor:pointer}
+
+/* итог */
+.score{font-size:68px;font-weight:700;text-align:center;color:var(--accent);line-height:1.1;margin-top:8px}
+.score small{font-size:26px;color:var(--ink-soft);font-weight:500}
+.verdict{text-align:center;font-size:18px;font-weight:600;margin-top:6px}
+.when{text-align:center;font-size:14px;color:var(--ink-soft);margin-top:4px}
+.res-row{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
+.res-row:last-child{border:0}
+.res-row b{white-space:nowrap}
+.res-row b.full{color:var(--ok)} .res-row b.part{color:var(--heavy)} .res-row b.zero{color:var(--bad)}
+
+.navrow{display:grid;grid-template-columns:auto 1fr;gap:10px}
+.navrow .back{background:var(--card);color:var(--accent);border:1.5px solid var(--line);padding:17px 18px;width:auto}
+.btn.finish{background:var(--heavy)}
+label.fld{display:block;font-size:15px;color:var(--ink-mid);margin-bottom:8px}
+input.name{width:100%;font:500 18px Inter,sans-serif;padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}
+input.name:focus{outline:none;border-color:var(--accent)}
+.small{font-size:13px;color:var(--ink-soft);margin-top:8px;line-height:1.45}
+.modal-bg{position:fixed;inset:0;background:rgba(26,26,46,.45);z-index:30;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.on{display:flex}
+.modal{background:#fff;border-radius:20px;padding:22px 20px 18px;max-width:420px;width:100%}
+.modal h3{font-size:20px;margin-bottom:8px}
+.modal p{font-size:16px;line-height:1.5;color:var(--ink-mid)}
+.modal .warn{color:var(--heavy);font-weight:600;margin-top:8px}
+.modal .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.modal .row2 .btn{padding:15px 8px;font-size:16px}
+.modal .row2 .ghost{background:var(--canvas-bg);color:var(--ink);border:1.5px solid var(--line)}
+.who{text-align:center;font-size:20px;font-weight:700;margin-top:2px}
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.dot{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);font-size:13px;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.dot.done{background:var(--gold-light);border-color:var(--gold);color:var(--ink)}
+.dot.cur{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+.revhint{background:#eef2f7;border-radius:14px;padding:10px 14px;margin-top:12px;font-size:14px;color:var(--ink-mid)}
+.res-row.link{cursor:pointer}
+.res-row.link span::after{content:' ›';color:var(--ink-soft)}
+.shot{background:var(--gold-light);border:1px solid #e3cf95;border-radius:16px;padding:14px 16px;margin-top:16px;font-size:16px;line-height:1.5}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="top" id="top">
+    <div class="top-row"><span id="stepLbl"></span><b id="ptsLbl"></b></div>
+    <div class="bar"><i id="bar"></i></div>
+  </div>
+  <main id="main"></main>
+</div>
+<div class="foot" id="foot"><div class="foot-in"><div class="navrow" id="navrow"><button class="btn back" id="backBtn">‹ Назад</button><button class="btn" id="mainBtn">Начать</button></div></div></div>
+<div class="modal-bg" id="modal"><div class="modal"><h3>Завершить контрольную?</h3><p id="modalTxt"></p><p class="warn">После завершения изменить ответы нельзя.</p><div class="row2"><button class="btn ghost" id="mNo">Вернуться</button><button class="btn finish" id="mYes">Завершить</button></div></div></div>
+<div class="sheet-bg" id="sheetBg"></div>
+<div class="sheet" id="sheet"><div class="sheet-in">
+  <div class="grab"></div>
+  <div class="word" id="sheetWord"></div>
+  <div class="row" id="sheetRow"></div>
+  <button class="rm" id="sheetRm">Убрать отметку</button>
+</div></div>
+
+<script>
+const TASKS=[{"type": "choose", "topic": "Полнозвучные буквы", "kind": "word", "q": "В каком слове есть <b>полнозвучная буква</b>?", "opts": null, "arOpts": true, "items": [{"opts": ["ٱلصَّمَدُ", "أَحَدٌ", "يَلِدۡ", "كُفُوًا"], "ans": 0}, {"opts": ["وَٱلضُّحَىٰ", "وَٱلَّيۡلِ", "سَجَىٰ", "وَدَّعَكَ"], "ans": 0}, {"opts": ["فَصَلِّ", "لِرَبِّكَ", "وَٱنۡحَرۡ", "شَانِئَكَ"], "ans": 0}, {"opts": ["خَوۡفِۭ", "فَلۡيَعۡبُدُواْ", "رَبَّ", "ٱلۡبَيۡتِ"], "ans": 0}]}, {"type": "choose", "topic": "Лям в слове «Аллах»", "kind": "ayah", "q": "Как читается <b>лям</b> в выделенном слове «Аллах»?", "opts": ["Твёрдо", "Мягко"], "fixed": true, "items": [{"ayah": 14, "words": ["أَلَمۡ", "يَعۡلَم", "بِأَنَّ", "ٱللَّهَ", "يَرَىٰ"], "hl": [4, 4], "surah": "Аль-Аляк", "ans": 0}, {"ayah": 8, "words": ["وَمَا", "نَقَمُواْ", "مِنۡهُمۡ", "إِلَّآ", "أَن", "يُؤۡمِنُواْ", "بِٱللَّهِ", "ٱلۡعَزِيزِ", "ٱلۡحَمِيدِ"], "hl": [7, 7], "surah": "Аль-Бурудж", "ans": 1}, {"ayah": 2, "words": ["رَسُولࣱ", "مِّنَ", "ٱللَّهِ", "يَتۡلُواْ", "صُحُفࣰا", "مُّطَهَّرَةࣰ"], "hl": [3, 3], "surah": "Аль-Бейина", "ans": 0}, {"ayah": 19, "words": ["يَوۡمَ", "لَا", "تَمۡلِكُ", "نَفۡسࣱ", "لِّنَفۡسࣲ", "شَيۡـࣰٔاۖ", "وَٱلۡأَمۡرُ", "يَوۡمَئِذࣲ", "لِّلَّهِ"], "hl": [9, 9], "surah": "Аль-Инфитар", "ans": 1}, {"ayah": 6, "words": ["نَارُ", "ٱللَّهِ", "ٱلۡمُوقَدَةُ"], "hl": [2, 2], "surah": "Аль-Хумаза", "ans": 0}]}, {"type": "choose", "topic": "Остановка в конце аята", "kind": "ayah", "q": "Аят кончается на выделенном слове. Как оно читается <b>при остановке</b>?", "arOpts": true, "items": [{"ayah": 1, "words": ["وَيۡلࣱ", "لِّكُلِّ", "هُمَزَةࣲ", "لُّمَزَةٍ"], "hl": [4, 4], "surah": "Аль-Хумаза", "opts": ["لُّمَزَهْ", "لُّمَزَتْ", "لُّمَزَةِنْ"], "ans": 0}, {"ayah": 4, "words": ["وَلَمۡ", "يَكُن", "لَّهُۥ", "كُفُوًا", "أَحَدُۢ"], "hl": [5, 5], "surah": "Аль-Ихлас", "opts": ["أَحَدْ", "أَحَدُنْ", "أَحَدَا"], "ans": 0}, {"ayah": 1, "words": ["وَٱلۡعَـٰدِيَـٰتِ", "ضَبۡحࣰا"], "hl": [2, 2], "surah": "Аль-Адийат", "opts": ["ضَبۡحَا", "ضَبۡحَنْ", "ضَبۡحْ"], "ans": 0}, {"ayah": 7, "words": ["فَأَمَّا", "مَنۡ", "أُوتِيَ", "كِتَـٰبَهُۥ", "بِيَمِينِهِۦ"], "hl": [5, 5], "surah": "Аль-Иншикак", "opts": ["بِيَمِينِهْ", "بِيَمِينِهِي", "بِيَمِينِهِ"], "ans": 0}]}, {"type": "find", "topic": "Гунна", "surah": "Сура Ан-Нас", "surahAr": "سُورَةُ ٱلنَّاسِ", "q": "Нажмите на все слова, где есть <b>гунна</b>: мим или нун с ташдидом.", "ayat": [[1, ["قُلۡ", "أَعُوذُ", "بِرَبِّ", "ٱلنَّاسِ"]], [2, ["مَلِكِ", "ٱلنَّاسِ"]], [3, ["إِلَـٰهِ", "ٱلنَّاسِ"]], [4, ["مِن", "شَرِّ", "ٱلۡوَسۡوَاسِ", "ٱلۡخَنَّاسِ"]], [5, ["ٱلَّذِي", "يُوَسۡوِسُ", "فِي", "صُدُورِ", "ٱلنَّاسِ"]], [6, ["مِنَ", "ٱلۡجِنَّةِ", "وَٱلنَّاسِ"]]], "key": {"1-4": "ok", "2-2": "ok", "3-2": "ok", "4-4": "ok", "5-5": "ok", "6-2": "ok", "6-3": "ok"}, "neutral": {}}, {"type": "classify", "topic": "Мим с сукуном", "q": "Нажмите на все слова, где <b>мим с сукуном</b>, и выберите правило.", "opts": [["izh", "Изхар", "изх"], ["ikh", "Ихфа", "их"], ["idg", "Идгам", "идг"]], "blocks": [{"surah": "Сура Курайш", "surahAr": "سُورَةُ قُرَيۡشٍ", "ayat": [[1, ["لِإِيلَـٰفِ", "قُرَيۡشٍ"]], [2, ["إِۦلَـٰفِهِمۡ", "رِحۡلَةَ", "ٱلشِّتَآءِ", "وَٱلصَّيۡفِ"]], [3, ["فَلۡيَعۡبُدُواْ", "رَبَّ", "هَـٰذَا", "ٱلۡبَيۡتِ"]], [4, ["ٱلَّذِيٓ", "أَطۡعَمَهُم", "مِّن", "جُوعࣲ", "وَءَامَنَهُم", "مِّنۡ", "خَوۡفِۭ"]]], "pre": "q"}, {"surah": "Сура Аль-Адийат, аяты 9–11", "surahAr": "سُورَةُ ٱلۡعَادِيَاتِ", "ayat": [[9, ["أَفَلَا", "يَعۡلَمُ", "إِذَا", "بُعۡثِرَ", "مَا", "فِي", "ٱلۡقُبُورِ"]], [10, ["وَحُصِّلَ", "مَا", "فِي", "ٱلصُّدُورِ"]], [11, ["إِنَّ", "رَبَّهُم", "بِهِمۡ", "يَوۡمَئِذࣲ", "لَّخَبِيرُۢ"]]], "pre": "a"}], "key": {"q2-1": "izh", "q4-2": "idg", "q4-5": "idg", "a11-2": "ikh", "a11-3": "izh"}, "neutral": {}}, {"type": "find", "topic": "Нун и танвин · изхар", "surah": "Сура Абаса, аяты 17–22", "surahAr": "سُورَةُ عَبَسَ", "q": "Нажмите на все слова, где нун с сукуном или танвин читается с <b>изхаром</b>.", "nun": true, "ayat": [[17, ["قُتِلَ", "ٱلۡإِنسَـٰنُ", "مَآ", "أَكۡفَرَهُۥ"]], [18, ["مِنۡ", "أَيِّ", "شَيۡءٍ", "خَلَقَهُۥ"]], [19, ["مِن", "نُّطۡفَةٍ", "خَلَقَهُۥ", "فَقَدَّرَهُۥ"]], [20, ["ثُمَّ", "ٱلسَّبِيلَ", "يَسَّرَهُۥ"]], [21, ["ثُمَّ", "أَمَاتَهُۥ", "فَأَقۡبَرَهُۥ"]], [22, ["ثُمَّ", "إِذَا", "شَآءَ", "أَنشَرَهُۥ"]]], "key": {"18-1": "ok", "18-3": "ok", "19-2": "ok"}, "neutral": {}}, {"type": "classify", "topic": "Нун и танвин · идгам", "surah": "Сура Аз-Зальзаля", "surahAr": "سُورَةُ ٱلزَّلۡزَلَةِ", "q": "Нажмите на все слова, где нун с сукуном или танвин читается с <b>идгамом</b>, и укажите: с гунной или без.", "nun": true, "opts": [["g", "С гунной", "с г."], ["n", "Без гунны", "без г."]], "ayat": [[1, ["إِذَا", "زُلۡزِلَتِ", "ٱلۡأَرۡضُ", "زِلۡزَالَهَا"]], [2, ["وَأَخۡرَجَتِ", "ٱلۡأَرۡضُ", "أَثۡقَالَهَا"]], [3, ["وَقَالَ", "ٱلۡإِنسَـٰنُ", "مَا", "لَهَا"]], [4, ["يَوۡمَئِذࣲ", "تُحَدِّثُ", "أَخۡبَارَهَا"]], [5, ["بِأَنَّ", "رَبَّكَ", "أَوۡحَىٰ", "لَهَا"]], [6, ["يَوۡمَئِذࣲ", "يَصۡدُرُ", "ٱلنَّاسُ", "أَشۡتَاتࣰا", "لِّيُرَوۡاْ", "أَعۡمَـٰلَهُمۡ"]], [7, ["فَمَن", "يَعۡمَلۡ", "مِثۡقَالَ", "ذَرَّةٍ", "خَيۡرࣰا", "يَرَهُۥ"]], [8, ["وَمَن", "يَعۡمَلۡ", "مِثۡقَالَ", "ذَرَّةࣲ", "شَرࣰّا", "يَرَهُۥ"]]], "key": {"6-1": "g", "6-4": "n", "7-1": "g", "7-5": "g", "8-1": "g", "8-5": "g"}, "neutral": {}}, {"type": "find", "topic": "Нун и танвин · икляб", "surah": "Сура Аш-Шамс, аяты 11–15", "surahAr": "سُورَةُ ٱلشَّمۡسِ", "q": "Нажмите на все слова, где нун с сукуном или танвин читается с <b>иклябом</b>.", "nun": true, "ayat": [[11, ["كَذَّبَتۡ", "ثَمُودُ", "بِطَغۡوَىٰهَآ"]], [12, ["إِذِ", "ٱنۢبَعَثَ", "أَشۡقَىٰهَا"]], [13, ["فَقَالَ", "لَهُمۡ", "رَسُولُ", "ٱللَّهِ", "نَاقَةَ", "ٱللَّهِ", "وَسُقۡيَـٰهَا"]], [14, ["فَكَذَّبُوهُ", "فَعَقَرُوهَا", "فَدَمۡدَمَ", "عَلَيۡهِمۡ", "رَبُّهُم", "بِذَنۢبِهِمۡ", "فَسَوَّىٰهَا"]], [15, ["وَلَا", "يَخَافُ", "عُقۡبَـٰهَا"]]], "key": {"12-2": "ok", "14-6": "ok"}, "neutral": {}}, {"type": "find", "topic": "Нун и танвин · ихфа", "surah": "Сура Ат-Тарик, аяты 1–10", "surahAr": "سُورَةُ ٱلطَّارِقِ", "q": "Нажмите на все слова, где нун с сукуном или танвин читается с <b>ихфа</b>.", "nun": true, "ayat": [[1, ["وَٱلسَّمَآءِ", "وَٱلطَّارِقِ"]], [2, ["وَمَآ", "أَدۡرَىٰكَ", "مَا", "ٱلطَّارِقُ"]], [3, ["ٱلنَّجۡمُ", "ٱلثَّاقِبُ"]], [4, ["إِن", "كُلُّ", "نَفۡسࣲ", "لَّمَّا", "عَلَيۡهَا", "حَافِظࣱ"]], [5, ["فَلۡيَنظُرِ", "ٱلۡإِنسَـٰنُ", "مِمَّ", "خُلِقَ"]], [6, ["خُلِقَ", "مِن", "مَّآءࣲ", "دَافِقࣲ"]], [7, ["يَخۡرُجُ", "مِنۢ", "بَيۡنِ", "ٱلصُّلۡبِ", "وَٱلتَّرَآئِبِ"]], [8, ["إِنَّهُۥ", "عَلَىٰ", "رَجۡعِهِۦ", "لَقَادِرࣱ"]], [9, ["يَوۡمَ", "تُبۡلَى", "ٱلسَّرَآئِرُ"]], [10, ["فَمَا", "لَهُۥ", "مِن", "قُوَّةࣲ", "وَلَا", "نَاصِرࣲ"]]], "key": {"4-1": "ok", "5-1": "ok", "5-2": "ok", "6-3": "ok", "10-3": "ok"}, "neutral": {"4-6": 1, "6-4": 1, "8-4": 1, "10-6": 1}}, {"type": "choose", "topic": "Нун и танвин · все правила", "kind": "ayah", "q": "Какое правило нуна с сукуном или танвина в выделенном месте?", "opts": ["Изхар", "Идгам с гунной", "Идгам без гунны", "Икляб", "Ихфа"], "items": [{"ayah": 1, "words": ["إِنَّآ", "أَنزَلۡنَـٰهُ", "فِي", "لَيۡلَةِ", "ٱلۡقَدۡرِ"], "hl": [2, 2], "surah": "Аль-Кадр", "ans": 4}, {"ayah": 3, "words": ["لَيۡلَةُ", "ٱلۡقَدۡرِ", "خَيۡرࣱ", "مِّنۡ", "أَلۡفِ", "شَهۡرࣲ"], "hl": [3, 4], "surah": "Аль-Кадр", "ans": 1}, {"ayah": 7, "words": ["فَهُوَ", "فِي", "عِيشَةࣲ", "رَّاضِيَةࣲ"], "hl": [3, 4], "surah": "Аль-Кариа", "ans": 2}, {"ayah": 15, "words": ["كَلَّا", "لَئِن", "لَّمۡ", "يَنتَهِ", "لَنَسۡفَعَۢا", "بِٱلنَّاصِيَةِ"], "hl": [5, 6], "surah": "Аль-Аляк", "ans": 3}, {"ayah": 3, "words": ["وَمِن", "شَرِّ", "غَاسِقٍ", "إِذَا", "وَقَبَ"], "hl": [3, 4], "surah": "Аль-Фаляк", "ans": 0}, {"ayah": 2, "words": ["مِن", "شَرِّ", "مَا", "خَلَقَ"], "hl": [1, 2], "surah": "Аль-Фаляк", "ans": 4}]}, {"type": "classify", "topic": "Буква Ра", "surah": "Сура Аль-Кариа", "surahAr": "سُورَةُ ٱلۡقَارِعَةِ", "q": "Нажмите на все слова с буквой <b>ра</b> и укажите: твёрдая или мягкая.", "opts": [["t", "Твёрдая", "Т"], ["m", "Мягкая", "М"]], "ayat": [[1, ["ٱلۡقَارِعَةُ"]], [2, ["مَا", "ٱلۡقَارِعَةُ"]], [3, ["وَمَآ", "أَدۡرَىٰكَ", "مَا", "ٱلۡقَارِعَةُ"]], [4, ["يَوۡمَ", "يَكُونُ", "ٱلنَّاسُ", "كَٱلۡفَرَاشِ", "ٱلۡمَبۡثُوثِ"]], [5, ["وَتَكُونُ", "ٱلۡجِبَالُ", "كَٱلۡعِهۡنِ", "ٱلۡمَنفُوشِ"]], [6, ["فَأَمَّا", "مَن", "ثَقُلَتۡ", "مَوَٰزِينُهُۥ"]], [7, ["فَهُوَ", "فِي", "عِيشَةࣲ", "رَّاضِيَةࣲ"]], [8, ["وَأَمَّا", "مَنۡ", "خَفَّتۡ", "مَوَٰزِينُهُۥ"]], [9, ["فَأُمُّهُۥ", "هَاوِيَةࣱ"]], [10, ["وَمَآ", "أَدۡرَىٰكَ", "مَا", "هِيَهۡ"]], [11, ["نَارٌ", "حَامِيَةُۢ"]]], "key": {"1-1": "m", "2-2": "m", "3-2": "t", "3-4": "m", "4-4": "t", "7-4": "t", "10-2": "t", "11-1": "t"}, "neutral": {}}, {"type": "classify", "topic": "Калькаля", "surah": "Сура Аль-Аляк, аяты 1–8", "surahAr": "سُورَةُ ٱلۡعَلَقِ", "q": "Нажмите на все слова с <b>калькалей</b> и укажите: малая или большая.", "opts": [["s", "Малая", "М"], ["b", "Большая", "Б"]], "ayat": [[1, ["ٱقۡرَأۡ", "بِٱسۡمِ", "رَبِّكَ", "ٱلَّذِي", "خَلَقَ"]], [2, ["خَلَقَ", "ٱلۡإِنسَـٰنَ", "مِنۡ", "عَلَقٍ"]], [3, ["ٱقۡرَأۡ", "وَرَبُّكَ", "ٱلۡأَكۡرَمُ"]], [4, ["ٱلَّذِي", "عَلَّمَ", "بِٱلۡقَلَمِ"]], [5, ["عَلَّمَ", "ٱلۡإِنسَـٰنَ", "مَا", "لَمۡ", "يَعۡلَمۡ"]], [6, ["كَلَّآ", "إِنَّ", "ٱلۡإِنسَـٰنَ", "لَيَطۡغَىٰٓ"]], [7, ["أَن", "رَّءَاهُ", "ٱسۡتَغۡنَىٰٓ"]], [8, ["إِنَّ", "إِلَىٰ", "رَبِّكَ", "ٱلرُّجۡعَىٰٓ"]]], "key": {"1-1": "s", "3-1": "s", "6-4": "s", "8-4": "s", "1-5": "b", "2-4": "b"}, "neutral": {}}];
+const AR='٠١٢٣٤٥٦٧٨٩';
+const num=n=>String(n).split('').map(d=>AR[+d]).join('');
+const $=id=>document.getElementById(id);
+const main=$('main'), btn=$('mainBtn'), back=$('backBtn');
+const KEY='tajvid_kontrol_2_v1';
+const HOW={
+  find:'<b>Как отвечать:</b> нажмите на слово — оно станет золотым. Нажмите ещё раз — отметка снимется.',
+  classify:'<b>Как отвечать:</b> нажмите на слово и выберите вариант внизу экрана. На слове появится метка. Чтобы исправить, нажмите на слово снова.',
+  choose:'<b>Как отвечать:</b> в каждом вопросе выберите один ответ.'
+};
+function maxOf(t){return t.type==='choose'?t.items.length:Object.keys(t.key).length}
+const TOTAL=TASKS.reduce((s,t)=>s+maxOf(t),0);
+const to100=r=>Math.round(r/TOTAL*100);
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+/* S — всё состояние, сохраняется на телефоне */
+let S=null, view='start', cur=0;
+function fresh(){
+  return {name:'',t0:null,t1:null,done:false,cur:0,
+    state:TASKS.map(t=>t.type==='choose'?t.items.map(()=>null):{}),
+    order:TASKS.map(t=>t.type==='choose'?t.items.map(it=>{const n=(it.opts||t.opts).length;return (t.fixed||!t.arOpts)?[...Array(n).keys()]:shuffle([...Array(n).keys()])}):null)};
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x&&x.state&&x.state.length===TASKS.length)return x}catch(e){}return null}
+
+/* подсчёт баллов без экрана */
+function scoreOf(i){
+  const t=TASKS[i], st=S.state[i];
+  if(t.type==='choose') return t.items.reduce((a,it,j)=>a+(st[j]===it.ans?1:0),0);
+  let found=0, extra=0;
+  for(const k in st){ if(t.neutral&&t.neutral[k]) continue; const w=t.key[k];
+    if(w){ if(t.type==='find'||w===st[k]) found++; } else extra++; }
+  return Math.max(0,found-extra);
+}
+function answered(i){const t=TASKS[i],st=S.state[i];return t.type==='choose'?st.some(x=>x!==null):Object.keys(st).length>0}
+
+function startScreen(){
+  view='start';
+  main.innerHTML=`<div class="screen">
+    <div class="ar-title">ٱخۡتِبَارٌ</div>
+    <h1>Контрольная работа</h1>
+    <div class="sub">Второй уровень · перед правилами мадда</div>
+    <div class="orn"></div>
+    <div class="card">
+      <label class="fld" for="nm">Ваше имя</label>
+      <input class="name" id="nm" autocomplete="off" placeholder="Имя и фамилия">
+      <div class="small">Имя нужно только для итогового экрана. Оно никуда не отправляется.</div>
+    </div>
+    <div class="cond"><b>Как читаем:</b> в конце каждого аята останавливаемся. Внутри аята не останавливаемся, знаки остановки внутри аята не учитываем.</div>
+    <div class="card"><h3>Как проходит контрольная</h3>
+      <ol class="topics" style="counter-reset:t">
+        <li>${TASKS.length} заданий, всего 100 баллов. Проходной балл — 70.</li>
+        <li>Ответы и баллы покажутся только в конце.</li>
+        <li>К прошлым заданиям можно вернуться кнопкой «Назад».</li>
+        <li>Попытка одна. Если страница закроется, ответы сохранятся.</li>
+      </ol></div>
+  </div>`;
+  $('top').style.display='none'; setBack(false);
+  btn.textContent='Начать'; btn.className='btn';
+  const nm=$('nm'); btn.disabled=true; btn.style.opacity=.45;
+  nm.oninput=()=>{const ok=!!nm.value.trim();btn.disabled=!ok;btn.style.opacity=ok?1:.45};
+}
+
+function wordsHTML(ws,a,clickable,hl,pre){
+  return ws.map((w,i)=>{
+    if(clickable) return `<span class="w" data-k="${pre||''}${a}-${i+1}">${w}</span>`;
+    if(hl&&i+1>=hl[0]&&i+1<=hl[1]){
+      if(i+1===hl[0]) return `<span class="hl">${ws.slice(hl[0]-1,hl[1]).join(' ')}</span>`;
+      return '';
+    }
+    return w;
+  }).filter(x=>x!=='').join(' ')+` <span class="an">${num(a)}</span>`;
+}
+function optLabel(t,v){const o=t.opts.find(o=>o[0]===v);return o?o[2]:''}
+function blocksOf(t){return t.blocks||[{surah:t.surah,surahAr:t.surahAr,ayat:t.ayat,pre:''}]}
+
+function taskScreen(i,review){
+  cur=i; const t=TASKS[i]; let body='';
+  if(t.type==='choose'){
+    body=t.items.map((it,j)=>{
+      const opts=it.opts||t.opts, ar=!!t.arOpts;
+      const txt=it.words?`<div class="src">${it.surah}, аят ${it.ayah}</div><div class="txt">${wordsHTML(it.words,it.ayah,false,it.hl)}</div>`:'';
+      return `<div class="item" data-j="${j}"><div class="num">Вопрос ${j+1}</div>${txt}
+        <div class="opts">${S.order[i][j].map(k=>`<button class="opt${ar?' ar':''}" data-k="${k}">${opts[k]}</button>`).join('')}</div></div>`;
+    }).join('');
+  }else{
+    body=blocksOf(t).map(b=>`<div class="sura"><div class="sura-h"><div class="a">${b.surahAr}</div><div class="r">${b.surah}</div></div>
+      <div class="txt">${b.ayat.map(([a,ws])=>wordsHTML(ws,a,true,null,b.pre)).join(' ')}</div></div>`).join('');
+  }
+  const firstOfType=TASKS.findIndex(x=>x.type===t.type)===i;
+  const how=(!review&&firstOfType)?`<div class="how">${HOW[t.type]}</div>`:'';
+  const chip=(t.type!=='choose'||t.kind==='ayah')?`<div class="chip">⏸ Остановка — только в конце аята</div>`:'';
+  const rev=review?`<div class="revhint">Разбор ошибок · задание ${i+1} из ${TASKS.length}</div>`:'';
+  main.innerHTML=`<div class="screen">${rev}
+    <span class="tag">${i+1} · ${t.topic}</span>
+    <div class="q">${t.q}</div>${how}${chip}
+    <div id="body">${body}</div><div id="fbWrap"></div>
+  </div>`;
+  window.scrollTo(0,0);
+  restore(i);
+  if(review){ showAnswers(i); }
+  else { bind(i); S.cur=i; save(); }
+  navButtons(review);
+  updTop(review);
+}
+
+function restore(i){
+  const t=TASKS[i], st=S.state[i];
+  if(t.type==='choose'){
+    main.querySelectorAll('.item').forEach(el=>{const p=st[+el.dataset.j];
+      el.querySelectorAll('.opt').forEach(b=>b.classList.toggle('pick',p!==null&&+b.dataset.k===p))});
+  }else main.querySelectorAll('.w').forEach(el=>paint(el,t,st[el.dataset.k]));
+}
+
+function bind(i){
+  const t=TASKS[i];
+  if(t.type==='choose'){
+    main.querySelectorAll('.item').forEach(el=>{
+      const j=+el.dataset.j;
+      el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+        S.state[i][j]=+b.dataset.k; save();
+        el.querySelectorAll('.opt').forEach(x=>x.classList.toggle('pick',x===b));
+        updTop();
+      });
+    });
+  }else{
+    main.querySelectorAll('.w').forEach(el=>el.onclick=()=>{
+      const k=el.dataset.k;
+      if(t.type==='find'){ if(S.state[i][k]) delete S.state[i][k]; else S.state[i][k]='ok'; paint(el,t,S.state[i][k]); save(); updTop(); }
+      else openSheet(el,i);
+    });
+  }
+}
+
+function paint(el,t,v){
+  el.classList.toggle('sel',!!v);
+  const old=el.querySelector('.lb'); if(old) old.remove();
+  if(v&&t.type==='classify') el.insertAdjacentHTML('afterbegin',`<span class="lb">${optLabel(t,v)}</span>`);
+}
+
+/* окно выбора варианта */
+let sheetEl=null, sheetTask=null;
+function openSheet(el,i){
+  const t=TASKS[i]; sheetEl=el; sheetTask=i;
+  const w=el.cloneNode(true); const lb=w.querySelector('.lb'); if(lb) lb.remove();
+  $('sheetWord').textContent=w.textContent;
+  const curv=S.state[i][el.dataset.k];
+  $('sheetRow').className='row c'+t.opts.length;
+  $('sheetRow').innerHTML=t.opts.map(o=>`<button class="btn${o[0]===curv?' cur':''}" data-v="${o[0]}">${o[1]}</button>`).join('');
+  $('sheetRow').querySelectorAll('button').forEach(b=>b.onclick=()=>setSheet(b.dataset.v));
+  $('sheetRm').style.display=curv?'block':'none';
+  $('sheetBg').style.display='block'; requestAnimationFrame(()=>$('sheet').classList.add('on'));
+}
+function closeSheet(){$('sheet').classList.remove('on');$('sheetBg').style.display='none'}
+function setSheet(v){
+  const k=sheetEl.dataset.k, t=TASKS[sheetTask];
+  if(v) S.state[sheetTask][k]=v; else delete S.state[sheetTask][k];
+  paint(sheetEl,t,v); closeSheet(); save(); updTop();
+}
+$('sheetBg').onclick=closeSheet; $('sheetRm').onclick=()=>setSheet('');
+
+const LEG={
+  ok:'<div><i style="background:var(--ok-bg);box-shadow:inset 0 -3px 0 var(--ok)"></i>верно</div>',
+  miss:'<div><i style="outline:2px dashed var(--ok);outline-offset:-2px"></i>пропущено</div>',
+  bad:'<div><i style="background:var(--bad-bg);box-shadow:inset 0 -3px 0 var(--bad)"></i>место верное, вариант неверный</div>',
+  extra:'<div><i style="background:var(--bad-bg)"></i>отмечено лишнее (−1 балл)</div>',
+  neu:'<div><i style="background:var(--neu)"></i>конец аята — здесь остановка, не учитывается</div>'
+};
+
+/* разбор: правильные ответы на экране */
+function showAnswers(i){
+  const t=TASKS[i], st=S.state[i]; let lines=[], used={};
+  $('body').classList.add('lock');
+  const pts=scoreOf(i);
+  if(t.type==='choose'){
+    main.querySelectorAll('.item').forEach(el=>{
+      const j=+el.dataset.j, a=t.items[j].ans, p=st[j];
+      el.querySelectorAll('.opt').forEach(b=>{const k=+b.dataset.k;b.classList.remove('pick');if(k===a)b.classList.add('ok');else if(k===p)b.classList.add('bad')});
+    });
+    lines.push(`Верно ${pts} из ${t.items.length}.`+(pts<t.items.length?' Правильный ответ отмечен зелёным.':''));
+  }else{
+    let found=0, wrongType=0, extra=0, missed=0;
+    main.querySelectorAll('.w').forEach(el=>{
+      const k=el.dataset.k, want=t.key[k], got=st[k];
+      el.classList.remove('sel'); const old=el.querySelector('.lb'); if(old) old.remove();
+      if(t.neutral&&t.neutral[k]){ if(got){el.classList.add('r-neu');used.neu=1} return; }
+      const lab=want&&t.type==='classify'?`<span class="lb">${optLabel(t,want)}</span>`:'';
+      if(want&&got){
+        if(t.type==='find'||want===got){found++;el.classList.add('r-ok');used.ok=1}
+        else{wrongType++;el.classList.add('r-bad');used.bad=1}
+        el.insertAdjacentHTML('afterbegin',lab);
+      }else if(want){missed++;el.classList.add('r-miss');el.insertAdjacentHTML('afterbegin',lab);used.miss=1}
+      else if(got){extra++;el.classList.add('r-extra');used.extra=1}
+    });
+    lines.push(`Верно: ${found} из ${maxOf(t)}.`);
+    if(missed) lines.push(`Пропущено: ${missed}.`);
+    if(wrongType) lines.push(`Место найдено, но вариант неверный: ${wrongType}.`);
+    if(extra) lines.push(`Лишних отметок: ${extra}, за каждую −1 балл.`);
+  }
+  const legend=t.type==='choose'?'':`<div class="legend">${['ok','miss','bad','extra','neu'].filter(k=>used[k]).map(k=>LEG[k]).join('')}</div>`;
+  const full=pts===maxOf(t);
+  $('fbWrap').innerHTML=`<div class="fb ${full?'full':'part'}"><div class="pts">${full?'Всё верно! ':''}${pts} из ${maxOf(t)}</div>${lines.join(' ')}${legend}</div>`;
+}
+
+function setBack(on){back.style.display=on?'block':'none';$('navrow').style.gridTemplateColumns=on?'auto 1fr':'1fr'}
+function navButtons(review){
+  $('foot').style.display='block';
+  setBack(cur>0);
+  btn.disabled=false; btn.style.opacity=1;
+  if(review){
+    btn.textContent=cur<TASKS.length-1?'Следующее задание':'К итогу'; btn.className='btn';
+  }else if(cur<TASKS.length-1){ btn.textContent='Дальше'; btn.className='btn'; }
+  else { btn.textContent='Завершить'; btn.className='btn finish'; }
+}
+
+function updTop(review){
+  $('top').style.display='block';
+  const n=TASKS.filter((_,i)=>answered(i)).length;
+  $('stepLbl').textContent=`Задание ${cur+1} из ${TASKS.length}`;
+  $('ptsLbl').textContent=review?`${to100(TASKS.reduce((a,_,i)=>a+scoreOf(i),0))} из 100`:`Отвечено: ${n} из ${TASKS.length}`;
+  $('bar').style.width=((cur+1)/TASKS.length*100)+'%';
+}
+
+function askFinish(){
+  const empty=TASKS.map((_,i)=>i).filter(i=>!answered(i)).map(i=>i+1);
+  $('modalTxt').textContent=empty.length?`Без ответа: задание ${empty.join(', ')}.`:'Все задания отвечены.';
+  $('modal').classList.add('on');
+}
+$('mNo').onclick=()=>$('modal').classList.remove('on');
+$('mYes').onclick=()=>{ $('modal').classList.remove('on'); S.done=true; S.t1=Date.now(); save(); resultScreen(); };
+
+function resultScreen(){
+  view='result';
+  const sc=TASKS.map((_,i)=>scoreOf(i));
+  const got=to100(sc.reduce((a,b)=>a+b,0));
+  const min=Math.max(1,Math.round((S.t1-S.t0)/60000));
+  const d=new Date(S.t1);
+  const esc=x=>x.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  main.innerHTML=`<div class="screen">
+    <div class="ar-title">ٱلنَّتِيجَةُ</div>
+    <div class="who">${esc(S.name)}</div>
+    <div class="when">${d.toLocaleDateString('ru-RU')} · ${d.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'})} · ${min} мин</div>
+    <div class="score">${got}<small> / 100</small></div>
+    <div class="verdict" style="color:${got>=70?'var(--ok)':'var(--bad)'}">${got>=70?'Сдано':'Не сдано'} · проходной балл 70</div>
+    <div class="card"><h3>По заданиям · верных мест</h3>${TASKS.map((t,i)=>{const s=sc[i],m=maxOf(t);
+      return `<div class="res-row link" data-i="${i}"><span>${i+1}. ${t.topic}</span><b class="${s===m?'full':s?'part':'zero'}">${s} / ${m}</b></div>`}).join('')}</div>
+    <div class="shot">📸 Сделайте скриншот верхней части экрана с баллами и отправьте преподавателю.</div>
+  </div>`;
+  main.querySelectorAll('.res-row.link').forEach(r=>r.onclick=()=>{view='review';taskScreen(+r.dataset.i,true)});
+  $('top').style.display='none'; setBack(false);
+  btn.textContent='Посмотреть ошибки'; btn.className='btn line'; btn.disabled=false; btn.style.opacity=1;
+  window.scrollTo(0,0);
+}
+
+btn.onclick=()=>{
+  if(view==='start'){ const nm=$('nm').value.trim(); if(!nm) return;
+    S=fresh(); S.name=nm; S.t0=Date.now(); save(); view='task'; taskScreen(0); return; }
+  if(view==='result'){ view='review'; taskScreen(0,true); return; }
+  if(view==='review'){ if(cur<TASKS.length-1) taskScreen(cur+1,true); else resultScreen(); return; }
+  if(cur<TASKS.length-1) taskScreen(cur+1); else askFinish();
+};
+back.onclick=()=>{ if(cur>0) taskScreen(cur-1,view==='review'); };
+
+S=load();
+if(S&&S.done) resultScreen();
+else if(S&&S.t0){ view='task'; taskScreen(S.cur||0); }
+else startScreen();
+</script>
+</body>
+</html>
